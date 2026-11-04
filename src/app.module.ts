@@ -9,6 +9,7 @@ import { ContentModule } from "./content/content.module";
 import { CareersModule } from "./careers/careers.module";
 import { FormsController } from "./forms/forms.controller";
 import { AdminController } from "./admin/admin.controller";
+import { AdminContentController } from "./admin/admin-content.controller";
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { AdminController } from "./admin/admin.controller";
     ContentModule,
     CareersModule,
   ],
-  controllers: [HealthController, FormsController, AdminController],
+  controllers: [HealthController, FormsController, AdminController, AdminContentController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule {}

@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Patch, Query, UseGuards, Req, Param, Res } from "@nestjs/common";
 import { IsIn, IsOptional, IsString, MaxLength } from "class-validator";
+import { SkipThrottle } from "@nestjs/throttler";
 import { Response } from "express";
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
@@ -17,6 +18,7 @@ class UpdateDto {
   internalNotes?: string;
 }
 
+@SkipThrottle()
 @Controller("admin")
 @UseGuards(JwtAuthGuard)
 export class AdminController {
