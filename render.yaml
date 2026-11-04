@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: shiftuplab-platform-api
+    runtime: docker
+    plan: starter
+    healthCheckPath: /v1/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "4000"
+      - key: JWT_EXPIRES_IN
+        value: 8h
+      - key: CORS_ORIGINS
+        value: https://shiftuplab.com,https://www.shiftuplab.com,https://blogs.shiftuplab.com,https://careers.shiftuplab.com,https://admin.shiftuplab.com
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["app"]
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String?
+  passwordHash String
+  status       String     @default("active")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  roles        UserRole[]
+
+  @@schema("app")
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  users       UserRole[]
+  permissions RolePermission[]
+
+  @@schema("app")
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  key         String           @unique
+  description String?
+  roles       RolePermission[]
+
+  @@schema("app")
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@schema("app")
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@schema("app")
+}
+
+model WaitlistEntry {
+  id               String   @id @default(cuid())
+  name             String
+  email            String   @unique
+  phone            String
+  state            String
+  city             String
+  institution      String
+  marketingConsent Boolean  @default(false)
+  source           String   @default("dino-website")
+  status           String   @default("new")
+  internalNotes    String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@schema("app")
+}
+
+model Contact {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String?
+  topic         String
+  message       String
+  status        String   @default("new")
+  internalNotes String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([email])
+  @@schema("app")
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  excerpt     String?
+  body        String
+  status      String    @default("draft")
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@schema("app")
+}
+
+model Job {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  description  String
+  status       String        @default("draft")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  applications Application[]
+
+  @@schema("app")
+}
+
+model Application {
+  id        String   @id @default(cuid())
+  jobId     String
+  email     String
+  name      String
+  status    String   @default("received")
+  createdAt DateTime @default(now())
+  job       Job      @relation(fields: [jobId], references: [id])
+
+  @@index([jobId, status])
+  @@schema("app")
+}
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  actorUserId  String?
+  action       String
+  resourceType String
+  resourceId   String?
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+  @@schema("app")
+}
