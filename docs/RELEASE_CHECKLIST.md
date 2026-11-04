@@ -4,9 +4,15 @@
 
 Do not commit `.env`, passwords, or Neon URLs.
 
-### 1. Push each patched folder into its GitHub repo
+### 1. GitHub remotes (pushed)
 
-These bundle folders are not git remotes. Copy the folder contents (including hidden files except `.env`) into the matching repo and push `main`.
+- Website (org, live Vercel source): https://github.com/askshiftup-lab/Shiftuplab_Waitlist_Website
+- API: https://github.com/technthspace-create/shiftuplab-platform-api
+- Blog: https://github.com/technthspace-create/shiftuplab-blog
+- Careers: https://github.com/technthspace-create/shiftuplab-careers
+- Admin: https://github.com/technthspace-create/shiftuplab-admin
+
+`askshiftup-lab/shiftuplab-admin` and `askshiftup-lab/shiftuplab-careers` exist but this account only has read access, so production source was pushed to `technthspace-create/*`. Transfer those four repos into `askshiftup-lab` (or grant push) before connecting Render/Vercel if the org must own them. Do not copy `.env`.
 
 ### 2. Neon production
 
